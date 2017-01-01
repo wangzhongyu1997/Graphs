@@ -6,7 +6,7 @@
 #include"BinaryTree.h"
 extern const  int MAX;
 
-void Graph::DFS(void visit(Vnode &),int v)//连通图的DFSddddd
+void Graph::DFS(void visit(Vnode &),int v)//连通图的DFS
 {
 	visit(list[v]);
 	visited[v] = true;
