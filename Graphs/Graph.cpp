@@ -79,6 +79,15 @@ void Graph::BFS2(void visit(Vnode&), int v)
 	visited[v] = true;
 	//CircleList_Queue pre_of_ToBeVisited();//存放访问过的点，即未访问点的前驱
 }
+std::string Graph::closest_to(int first, int destination)
+{
+	if(relative)
+		return relative->closest_to(first, destination);
+	else
+	{
+		throw std::overflow_error("没有relative,无法处理");
+	}
+}
 void Graph::refresh()
 {
 	for (int i = 0; i < num_V; i++)
@@ -319,6 +328,8 @@ Graph::~Graph()
 		delete pre;
 	}
 	//delete[]list; list是静态的
+	if (relative)
+		delete relative;
 }
 
 int Graph::_locate(const Data& e)

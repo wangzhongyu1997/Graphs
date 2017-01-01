@@ -28,6 +28,7 @@ public:
 	void DFS_createBinaryTree( int v, BinaryNode* &T);
 	void BFS(void visit(Vnode&),int v);
 	void BFS2(void visit(Vnode&), int v);
+	std::string closest_to(int first, int destination);
 
 	void refresh();//ÎªËÑË÷ÊÕÊ°ÀÃÌ¯×Ó
 	void add_V(Data d);
