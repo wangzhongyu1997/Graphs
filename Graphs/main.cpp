@@ -52,13 +52,14 @@ int main()
 	*另外，在删除一个点时，其他点的索引不变，此点被标记为删除，并删除与之邻接的所有弧（邻接表）//或者把与之邻接的所有弧的权标记为-1(邻接矩阵)
 	*且num_V保持不变
 	*/
-	int V = 6;
-	int E = 8;
-	
+	/*
+	int V;
+	int E;
+	std::cout << "建立有向图\n,请输入顶点数和弧数\n>";
+	std::cin >> V >> E;
+	Graph grap_no_direction(V,E);//用cin建立有向图*/
 
-
-	Graph grap_no_direction(6, 8);//用cin建立图
-	//Graph grap_no_direction(set);//建立无向图
+	Graph grap_no_direction(set);//建立无向图
 	BinaryTree tree=nullptr;
 	std::cout << "深度优先遍历，建立二叉树以表示深度优先生成树\n";
 	grap_no_direction.DFS_createBinaryTree(0, tree);//以二叉树表示的DFS生成树
