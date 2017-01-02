@@ -57,8 +57,8 @@ int main()
 	
 
 
-	//Graph gg(6, 8);//用cin建立图
-	Graph grap_no_direction(set);//建立无向图
+	Graph grap_no_direction(6, 8);//用cin建立图
+	//Graph grap_no_direction(set);//建立无向图
 	BinaryTree tree=nullptr;
 	std::cout << "深度优先遍历，建立二叉树以表示深度优先生成树\n";
 	grap_no_direction.DFS_createBinaryTree(0, tree);//以二叉树表示的DFS生成树
@@ -75,17 +75,15 @@ int main()
 	std::string path;
 	std::cout << "下面执行两种操作:\n";
 	int op;
-	do
+	while (std::cout << "求最短路径:1\n删除点 : 2\n退出:0\n"&&std::cin >> op)
 	{
-		std::cout << "求最短路径:1\n删除点 : 2\n退出:0\n";
-		std::cin >> op;
 		if (op == 1)
 		{
 			std::cout << "输入两个点的数据>";
 			std::string first, second;
 			std::cin >> first >> second;
 			path=graph_matrix->closest_to(grap_no_direction._locate(first), grap_no_direction._locate(second));
-			std::cout << path;
+			std::cout << path<<std::endl;
 		}
 		else if (op == 2)
 		{
@@ -95,7 +93,7 @@ int main()
 			grap_no_direction.del_V(grap_no_direction._locate(V));
 		}
 		else break;
-	} while (true);
+	} 
 		
 	return 0;
 }
