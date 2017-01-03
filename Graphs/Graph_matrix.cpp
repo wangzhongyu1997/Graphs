@@ -14,6 +14,9 @@ Graph_matrix::Graph_matrix(int n):_n(n)
 void Graph_matrix::dij_path(int index)
 {
 	for (int i = 0; i < _n; i++)
+		Selected[i] = false;
+
+	for (int i = 0; i < _n; i++)
 	{
 		distance[i] = table[index][i];//distance[i]表示从  index到 i 的距离
 		if (table[index][i] < MAX)
@@ -61,13 +64,7 @@ void Graph_matrix::dij_path(int index)
 		}
 }
 
-void Graph_matrix::refesh_selected()
-{
-	for (int i = 0; i < _n; i++)
-	{
-		Selected[i] = false;
-	}
-}
+
 
 void Graph_matrix::init()
 {
@@ -149,7 +146,7 @@ void Graph_matrix::del_V(int index)
 
 std::string Graph_matrix::closest_to(int first,int destination)
 {
-	this->refesh_selected();//重置S集合
+	
 	int p = destination;
 	this->dij_path(first);
 	std::string route="";
@@ -161,32 +158,4 @@ std::string Graph_matrix::closest_to(int first,int destination)
 
 	route = relative->list[first].data + route;
 	return route;
-}
-
-
-Graph_matrix::Graph_matrix(Graph_matrix & another)
-{
-	
-
-	relative = another.relative;
-	_n = another._n;
-	this->init();
-	for (int i = 0; i < _n; i++)
-	{
-		path[i] = another.path[i];
-		Selected[i] = another.Selected[i];
-		distance[i] = another.distance[i];
-	}
-
-	for (int i = 0; i < _n; i++)
-	{
-		for (int j = 0; j < _n; j++)
-			table[i][j] = another.table[i][j];
-	}
-}
-
-
-Graph_matrix::~Graph_matrix()
-{
-	
 }

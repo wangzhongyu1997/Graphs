@@ -1,0 +1,924 @@
+/**main.cpp*/
+#include"Graph.h"
+#include<iostream>
+//#include"CircleList_Queue.h"
+#include"Graph_matrix.h"
+#include"BinaryTree.h"
+void set(std::string&a)
+{
+	std::cin >> a;
+}
+void visit(Vnode &a)
+{
+	std::cout << a.data << ' ';
+}
+
+int main()
+{
+	/**
+	*×¢Òâ£¬ÔÚÕâ¸ö³ÌĞòµÄÂß¼­Àï£¬ÁÚ½Ó¾ØÕóÊÇ·şÎñÓÚÁÚ½Ó±íµÄ¡£ 
+	*ÒòÎªÁ½¸ö´æ´¢·½Ê½²»Í¬£¬ÎÒ°ÑËûÃÇ·âÔÚ²»Í¬µÄÀàÀï£¬²¢ÓÃÖ¸Õë¾ÛºÏ¡£
+
+	*ÁÚ½Ó¾ØÕó²»±£´æData
+	*²»µÃ²»Ëµ£¬Ğ´µÄºÜÂÒ£¬ÎÒ±ØĞëĞ´ºÜ¶à×¢ÊÍÀ´ÀíÇå¹ØÏµ
+	*ÁíÍâ£¬ÔÚÉ¾³ıÒ»¸öµãÊ±£¬ÆäËûµãµÄË÷Òı²»±ä£¬´Ëµã±»±ê¼ÇÎªÉ¾³ı£¬²¢É¾³ıÓëÖ®ÁÚ½ÓµÄËùÓĞ»¡£¨ÁÚ½Ó±í£©//»òÕß°ÑÓëÖ®ÁÚ½ÓµÄËùÓĞ»¡µÄÈ¨±ê¼ÇÎª-1(ÁÚ½Ó¾ØÕó)
+	*ÇÒnum_V±£³Ö²»±ä
+	*/
+	int op0 = 0;
+	while (std::cout<<"ÊäÈë1½¨Á¢ÎŞÏòÍ¼£¬ÊäÈë2½¨Á¢ÓĞÏòÍ¼£¬ÆäËûÔòÍË³ö\n>"&&std::cin>>op0)
+	{
+		if (op0 == 1)
+		{
+			std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ÎŞÏòÍ¼µÄ²Ù×÷-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n";
+			Graph grap_no_direction(set);//½¨Á¢ÎŞÏòÍ¼
+			BinaryTree tree = nullptr;
+			std::cout << "Éî¶ÈÓÅÏÈ±éÀú£¬½¨Á¢¶ş²æÊ÷ÒÔ±íÊ¾Éî¶ÈÓÅÏÈÉú³ÉÊ÷\n";
+			grap_no_direction.DFS_createBinaryTree(0, tree);//ÒÔ¶ş²æÊ÷±íÊ¾µÄDFSÉú³ÉÊ÷
+
+			grap_no_direction.refresh_visited();
+			std::cout << "Éî¶ÈÓÅÏÈ½á¹û£º\n";
+			grap_no_direction.DFS(visit, 0);//Éî¶ÈÓÅÏÈËÑË÷
+
+			grap_no_direction.refresh_visited();
+			std::cout << "\n¹ã¶È±éÀú½á¹û\n";
+			grap_no_direction.BFS(visit, 0);//¹ã¶ÈÓÅÏÈËÑË÷
+			Graph_matrix*graph_matrix = grap_no_direction.New_get_matrix();//»ñÈ¡¾ØÕó
+			std::string path;
+			std::cout << "\n\nÏÂÃæÖ´ĞĞÁ½ÖÖ²Ù×÷:\n\n";
+			int op;
+			while (std::cout << "\tÇó×î¶ÌÂ·¾¶:1\n\tÉ¾³ıµã : 2\n\t·µ»ØÉÏÒ»²ã:0\n>"&&std::cin >> op)
+			{
+				if (op == 1)
+				{
+					std::cout << "ÊäÈëÁ½¸öµãµÄÊı¾İ>";
+					std::string first, second;
+					std::cin >> first >> second;
+					try {
+						path = graph_matrix->closest_to(grap_no_direction._locate(first), grap_no_direction._locate(second));
+						std::cout << path << std::endl;
+					}
+					catch (std::range_error&e)
+					{
+						std::cout << e.what();
+					}
+					catch (std::exception&e)
+					{
+						std::cout << e.what();
+						std::cout << "\n´ËÂ·²»Í¨" << std::endl;
+					}
+				}
+				else if (op == 2)
+				{
+					std::cout << "ÊäÈëÒ»¸öµãµÄÊı¾İ>";
+					std::string V;
+					std::cin >> V;
+					grap_no_direction.del_V(grap_no_direction._locate(V));
+				}
+				else break;
+			}
+		}
+		else if (op0 == 2)
+
+		{
+			std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-ÓĞÏòÍ¼µÄ²Ù×÷-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n";
+			int V;
+			int E;
+			std::cout << "½¨Á¢ÓĞÏòÍ¼,ÇëÊäÈë¶¥µãÊıºÍ»¡Êı\n>";
+			std::cin >> V >> E;
+			Graph grap_with_direction(V, E);//ÓÃcin½¨Á¢ÓĞÏòÍ¼
+
+			BinaryTree tree = nullptr;
+			std::cout << "Éî¶ÈÓÅÏÈ±éÀú£¬½¨Á¢¶ş²æÊ÷ÒÔ±íÊ¾Éî¶ÈÓÅÏÈÉú³ÉÊ÷\n";
+			grap_with_direction.DFS_createBinaryTree(0, tree);//ÒÔ¶ş²æÊ÷±íÊ¾µÄDFSÉú³ÉÊ÷
+
+			grap_with_direction.refresh_visited();
+			std::cout << "Éî¶ÈÓÅÏÈ½á¹û£º\n";
+			grap_with_direction.DFS(visit, 0);//Éî¶ÈÓÅÏÈËÑË÷
+
+
+			grap_with_direction.refresh_visited();
+			std::cout << "\n¹ã¶È±éÀú½á¹û\n";
+			grap_with_direction.BFS(visit, 0);//¹ã¶ÈÓÅÏÈËÑË÷
+			grap_with_direction.New_get_matrix();//Éú³É¾ØÕó
+			std::string path;
+			std::cout << "\n\nÏÂÃæÖ´ĞĞÁ½ÖÖ²Ù×÷:\n\n";
+			int op;
+			while (std::cout << "\tÇó×î¶ÌÂ·¾¶:1\n\tÉ¾³ıµã : 2\n\t·µ»ØÉÏÒ»²ã:0\n>"&&std::cin >> op)
+			{
+				if (op == 1)
+				{
+					std::cout << "ÊäÈëÁ½¸öµãµÄÊı¾İ>";
+					std::string first, second;
+					std::cin >> first >> second;
+					try {
+						path = grap_with_direction.closest_to(grap_with_direction._locate(first), grap_with_direction._locate(second));
+						std::cout << path << std::endl;
+					}
+					catch (std::range_error&e)
+					{
+						std::cout<<e.what();
+					}
+					catch (std::exception&e)
+					{
+						std::cout << e.what();
+						std::cout << "\n´ËÂ·²»Í¨" << std::endl;
+					}
+					
+				}
+				else if (op == 2)
+				{
+					std::cout << "ÊäÈëÒ»¸öµãµÄÊı¾İ>";
+					std::string V;
+					std::cin >> V;
+					grap_with_direction.del_V(grap_with_direction._locate(V));
+				}
+				else break;
+			}
+		}
+		else
+			break;//ÓĞÏòÎŞÏò
+	}
+	return 0;
+}ÿ
+
+
+
+
+/**CircleList_Queue.h*/
+#pragma once
+#include<iostream>
+//#include<string>
+typedef int Element;
+struct node
+{
+	Element data;
+	node*next;
+};
+
+
+
+class CircleList_Queue
+{
+public:
+	CircleList_Queue();
+	CircleList_Queue(int );
+	~CircleList_Queue();
+
+	void in(Element d);
+	Element out();
+	void clear();
+
+	bool isEmpty();
+	void display();
+private:
+	node *rear;
+	int n;//¼ÇÂ¼½ÚµãÊı
+};
+
+ÿ
+
+
+/**CircleList_Queue.cpp*/
+#include "CircleList_Queue.h"
+
+
+
+CircleList_Queue::CircleList_Queue()
+{
+	rear = nullptr;
+	n = 0;
+}
+
+CircleList_Queue::CircleList_Queue(int)
+{
+}
+
+
+CircleList_Queue::~CircleList_Queue()
+{
+	clear();
+}
+
+void CircleList_Queue::in(Element d)
+{
+	if (!n)
+	{
+		rear = new node;
+		rear->data = d;
+		rear->next = rear;
+		n++;
+	}
+	else
+	{
+		node*NewN = new node;
+		NewN->next = rear->next;
+		NewN->data = d;
+		rear->next = NewN;
+		rear = NewN;
+		n++;
+	}
+}
+
+Element CircleList_Queue::out()
+{
+	if (n == 1)
+	{
+		Element t = rear->data;
+		delete rear;
+		rear = nullptr;
+		n--;
+		return  t;
+	}
+	node*p = rear->next;
+	rear->next = rear->next->next;
+	Element t = p->data;
+	delete p;
+	n--;
+	return t;
+}
+
+bool CircleList_Queue::isEmpty()
+{
+	return !bool(n);
+}
+
+void CircleList_Queue::display()
+{
+	node*p = rear->next;
+	while (p!=rear)
+	{
+		std::cout << p->data << ' ';
+		p = p->next;
+	}
+	std::cout << p->data << ' ';
+}
+
+void CircleList_Queue::clear()
+{
+	if (n)
+	{
+		while (rear->next != rear)
+		{
+			node*p = rear->next;
+			rear->next = rear->next->next;
+			delete p;
+		}
+		delete rear;
+		rear = nullptr;
+		n = 0;
+	}
+}
+ÿ
+
+
+/**Graph.h*/
+#pragma once
+#include<string>
+class Graph_matrix;//Ç°ÖÃÉùÃ÷£¬½«»áÓÃµ½Graph_matrix×÷Îª New_get_matrix();µÄ·µ»ØÖµ
+struct BinaryNode;
+typedef std::string Data;
+const int MAX_LENGHT = 100;
+
+struct ArcNode
+{
+	int ToV;//ËùÖ¸ÏòµÄ½ÚµãµÄË÷Òı
+	ArcNode* nearArc;//ÁÙ½ü±ß
+	int info;//ĞÅÏ¢
+};
+
+struct Vnode
+{
+	Data data;//½ÚµãÎ¨Ò»ÊôĞÔ
+	ArcNode *firstArc;
+};
+class Graph
+{
+public:
+	friend class Graph_matrix;
+	bool * visited;//±êÖ¾Êı×é
+
+	void DFS(void visit(Vnode&),int v);
+	void DFS(int v);//ÎŞÓÃº¯Êı
+	void DFS_createBinaryTree( int v, BinaryNode* &T);
+	void BFS(void visit(Vnode&),int v);
+	void BFS2(void visit(Vnode&), int v);
+	std::string closest_to(int first, int destination);
+
+	void refresh_visited();//ÎªËÑË÷ÊÕÊ°ÀÃÌ¯×Ó
+	void add_V(Data d);
+	void add_E(int from,int des,int coast);
+	bool del_E(int from,int des);
+	void del_V(int index);
+	Graph(void input(Data&Element));//ÎŞÏòÍ¼¹¹Ôì£¬Ö»ÊÇÎªÁËÌåÑéÒ»ÏÂº¯Êı×÷²Î
+	Graph(int V, int E);//ÓĞÏòÍ¼¹¹Ôì
+	~Graph();
+
+	Graph_matrix* New_get_matrix();//ÇëÌØ±ğ×¢Òâ£¬·µ»ØµÄÊÇÒ»¸ö¶¯Ì¬µÄ¶ÔÏóÖ¸Õë£¡£¡/Ö»Îª±ÜÃâ¸´ÖÆ
+	int  _locate(const Data& e);
+	
+private:
+	
+	Vnode list[MAX_LENGHT];//½Úµã±í
+	int num_V;//½ÚµãÊı
+	int num_E;//±ßÊı
+	Graph_matrix*relative;//ÓëÖ®¹ØÁªµÄÁÚ½Ó¾ØÕó
+	bool right;//Éú³ÉÊ÷ÍùÓÒ×ª£¿
+};
+
+ÿ
+
+
+/**Graph.cpp*/
+#include "Graph.h"
+#include<iostream>
+#include<stdexcept>
+#include"CircleList_Queue.h"
+#include"Graph_matrix.h"
+#include"BinaryTree.h"
+extern const  int MAX;
+
+void Graph::DFS(void visit(Vnode &),int v)//Á¬Í¨Í¼µÄDFS
+{
+	visit(list[v]);
+	visited[v] = true;
+	ArcNode*p = list[v].firstArc;
+	while (p)
+	{
+		int w = p->ToV;
+		if (!visited[w]) DFS(visit, w);
+		p = p->nearArc;
+	}
+}
+void Graph::DFS(int v)
+{
+	visited[v] = true;
+	ArcNode*p = list[v].firstArc;
+	while (p)
+	{
+		int w = p->ToV;
+		if (!visited[w]) DFS(w);
+		p = p->nearArc;
+	}
+}
+void Graph::DFS_createBinaryTree(int v, BinaryNode *& T)
+{
+	//visit(list[v]);
+	visited[v] = true;
+	T = new BinaryNode;
+	T->data = list[v].data;
+	right = false;
+
+	ArcNode*p = list[v].firstArc;
+	while (p)
+	{
+		int w = p->ToV;
+		if (!visited[w]&&!right) DFS_createBinaryTree(w,T->leftChild);
+		
+		if (!visited[w] &&right)DFS_createBinaryTree(w, T->rightChild);
+		
+		p = p->nearArc;
+		right = true;
+	}
+}
+
+void Graph::BFS(void visit(Vnode&),int v)//Á¬Í¨Í¼µÄBFS
+{
+	visit(list[v]);
+	visited[v] = true;
+
+	CircleList_Queue pre_of_ToBeVisited;//´æ·Å·ÃÎÊ¹ıµÄµã£¬¼´Î´·ÃÎÊµãµÄÇ°Çı
+	pre_of_ToBeVisited.in(v);
+	int temp;
+	while (!pre_of_ToBeVisited.isEmpty())
+	{
+		temp = pre_of_ToBeVisited.out();
+		for (ArcNode *arc = list[temp].firstArc; arc; arc=arc->nearArc)
+		{
+			int index = arc->ToV;
+			if (!visited[index])
+			{
+				visit(list[index]);
+				visited[index] = true;
+				pre_of_ToBeVisited.in(index);
+			}
+		}
+	}
+}
+void Graph::BFS2(void visit(Vnode&), int v)
+{
+	visit(list[v]);
+	visited[v] = true;
+	//CircleList_Queue pre_of_ToBeVisited();//´æ·Å·ÃÎÊ¹ıµÄµã£¬¼´Î´·ÃÎÊµãµÄÇ°Çı
+}
+std::string Graph::closest_to(int first, int destination)
+{
+	if(relative)
+		return relative->closest_to(first, destination);
+	else
+	{
+		throw std::logic_error("Ã»ÓĞrelative,ÎŞ·¨´¦Àí");
+	}
+}
+void Graph::refresh_visited()
+{
+	for (int i = 0; i < num_V; i++)
+	{
+		visited[i] = false;
+	}
+}
+void Graph::add_V(Data d)
+{
+	list[num_V].data = d;
+	list[num_V].firstArc = nullptr;
+	num_V++;
+	if (relative)
+	{
+		int n = relative->_n;
+		for (int i = 0; i <= n; i++)
+		{
+			relative->table[n][i] = MAX;
+			relative->table[i][n] = MAX;
+		}
+		relative->_n++;
+	}
+}
+void Graph::add_E(int from, int des,int coast)
+{
+	ArcNode*NewArc = new ArcNode;
+	NewArc->ToV = des;
+	NewArc->info = coast;
+	NewArc->nearArc = list[from].firstArc;
+	list[from].firstArc = NewArc;
+	if (relative)
+		relative->table[from][des] = coast;
+}
+
+bool Graph::del_E(int from, int des)
+{
+	ArcNode *pre = list[from].firstArc;
+	if (!pre)
+		return false;
+
+	ArcNode *p = pre->nearArc;
+	if (pre->ToV == des)
+	{
+		delete pre;
+		list[from].firstArc = p;
+
+		if (relative)
+			relative->table[from][des] = MAX;
+
+		return true;
+	}
+	else
+	{
+		while (p&&p->ToV!=des)
+		{
+			pre = p;
+			p = p->nearArc;
+		}
+		if (p->ToV == des)
+		{
+			pre->nearArc = p->nearArc;
+			delete p;
+
+			if (relative) 
+				relative->table[from][des] = MAX;
+
+			return true;
+		}
+		else return false;
+	}
+
+}
+
+void Graph::del_V(int index)
+{
+	if(list[index].data!="")
+	{
+		list[index].data = "";
+		ArcNode*p = list[index].firstArc;
+		list[index].firstArc = nullptr;
+		ArcNode*temp = p;
+		while (p)
+		{
+			temp = p;
+			p = p->nearArc;
+			delete temp;
+		}
+		for (int i = 0; i < num_V; i++)
+		{
+			if (list[i].data == "")//´ËµãÒÑ¾­±»É¾³ı
+				continue;
+
+			ArcNode *pre = list[i].firstArc;
+
+			if (!pre)//´ËµãÃ»ÓĞ³ö¶È
+				continue;
+
+			if (pre->ToV == index)
+			{
+				list[i].firstArc = list[i].firstArc->nearArc;
+				delete pre;
+			}
+			else
+			{
+				ArcNode *now = pre->nearArc;
+				while (now)
+				{
+					if (now->ToV == index)
+					{
+						pre->nearArc = now->nearArc;
+						delete now;
+						now = pre->nearArc;
+						continue;
+					}
+					pre = now;
+					now = now->nearArc;
+				}
+			}
+		}
+
+
+		if (relative)
+		{
+			int n = relative->_n;
+			for (int i = 0; i < n; i++)
+			{
+				relative->table[index][i] = -1;
+				relative->table[i][index] = -1;
+			}
+		}
+	}
+}
+
+Graph::Graph(void set(Data&Element))
+{
+	right = false;
+	relative = nullptr;
+	std::cout << "¹¹ÔìÎŞÏòÍ¼£ºÊäÈë½ÚµãÊıºÍ±ßÊı\n>";
+	std::cin >> num_V >> num_E;//ÊäÈë½ÚµãÊıºÍ±ßÊı
+	visited = new bool[num_V];
+	for (int i = 0; i < num_V; i++)
+	{
+		visited[i] = false;
+	}
+	std::cout << "¸÷¸ö½Úµã" << std::endl;
+	for (int i = 0; i < num_V; i++)
+	{
+		set(list[i].data);
+		list[i].firstArc = nullptr;
+	}
+	std::cout << "ÊäÈë±ß:(´®)Ê×½Úµã£¬Î²½Úµã£»  (int)È¨Öµ\n";
+	Data first, second;
+	int cost;
+	for (int i = 0; i < num_E; i++)
+	{
+		std::cout << '>';
+		std::cin >> first >> second>>cost;
+		int index_1;
+		int index_2;
+		try
+		{
+			index_1 = _locate(first);
+			index_2 = _locate(second);
+		}
+		catch (const std::exception&e)
+		{
+			std::cout << e.what();
+			std::cout << "³ÌĞòÒÑ¾­×Ô¶¯Í£Ö¹";
+			abort();
+		}
+		
+		ArcNode *ArcNew = new ArcNode;
+		ArcNew->info = cost;
+		ArcNew->ToV = index_2;//»¡first-¡·second
+		ArcNew->nearArc = list[index_1].firstArc;
+		list[index_1].firstArc = ArcNew;
+
+		ArcNode*ArcNew2 = new ArcNode;
+		ArcNew2->info = cost;
+		ArcNew2->nearArc = list[index_2].firstArc;
+		ArcNew2->ToV = index_1;//»¡second-¡·first
+		list[index_2].firstArc = ArcNew2;
+	}
+}
+
+Graph::Graph(int Vnum, int Enum)
+{	
+	right = false;
+	relative = nullptr;
+	num_V = Vnum;
+	num_E = Enum;
+	visited = new bool[num_V];
+	for (int i = 0; i < num_V; i++)
+	{
+		visited[i] = false;
+	}
+	std::cout << "¸÷¸ö½Úµã" << std::endl;
+	for (int i = 0; i < num_V; i++)
+	{
+		std::cin>>list[i].data;
+		list[i].firstArc = nullptr;
+	}
+	std::cout << "ÊäÈë±ß:(´®)»¡µÄÆğµã£¬»¡µÄÖÕµã£¬  (int)È¨Öµ\n";
+	Data first, second;
+	int cost;
+	for (int i = 0; i < num_E; i++)
+	{
+		std::cout << '>';
+		std::cin >> first >> second >> cost;
+		int index_1 = _locate(first);
+		int index_2 = _locate(second);
+		ArcNode *ArcNew = new ArcNode;
+		ArcNew->info = cost;
+		ArcNew->ToV = index_2;//»¡first-¡·secondÖ¸Ïòsecond
+		ArcNew->nearArc = list[index_1].firstArc;
+		list[index_1].firstArc = ArcNew;
+
+	}
+}
+
+Graph_matrix* Graph::New_get_matrix()
+{
+	Graph_matrix* graph=new Graph_matrix(num_V);
+	for (int i = 0; i < num_V; i++)
+	{
+		ArcNode*p = list[i].firstArc;
+		while (p)
+		{
+			graph->table[i][p->ToV] = p->info;
+			p = p->nearArc;
+		}
+	}
+	graph->relative = this;
+	this->relative = graph;
+	return graph;
+}
+
+
+Graph::~Graph()
+{
+	for (int i = 0; i < num_V; i++)
+	{
+		ArcNode*pre = list[i].firstArc;
+		if (!pre)
+			continue;
+		ArcNode * p = pre->nearArc;
+		while (p)
+		{
+			delete pre;
+			pre = p;
+			p = p->nearArc;
+		}
+		delete pre;
+	}
+	//delete[]list; listÊÇ¾²Ì¬µÄ
+	if (relative)
+		delete relative;
+}
+
+int Graph::_locate(const Data& e)
+{
+	for (int i = 0; i < num_V; i++)
+		if (list[i].data == e)
+			return i;
+	throw std::range_error("Ã»ÕÒµ½¶¥µã\n");
+}
+ÿ
+
+
+/**Graph_matrix.h*/
+#pragma once
+#include<string>
+typedef  std::string Data;
+
+class Graph;
+class Graph_matrix
+{
+public:
+	friend class Graph;
+	Graph_matrix(Graph_matrix&another);
+	~Graph_matrix();
+
+	std::string closest_to(int first, int destination);
+	void dij_path(int index);
+
+	void refesh_selected();//ÉèÖÃ¼¯ºÏS ÒÔ±ã   ÔÙ´ÎÊ¹ÓÃµŞ½áÌØÀ­Ë¹Ëã·¨
+	void init();//ÖÃtableÎªÈ«²»¿É´ï
+	void setValue(Graph*gp);
+	int path[30];//Ä³¸ö½ÚµãÇ°Çı ÓÃÓÚdij_sort
+	void add_E(int from,int des,int coast);
+	void add_V(Data d);
+	void del_E(int from, int des);
+	void del_V(int index);
+
+	
+private:
+	Graph_matrix(int n);
+	int _n;//¹æÄ£
+	int table[30][30];//±í//////////////////////*Ã»ÓĞÓÃ¶¯Ì¬Êı×é£¬ÒòÎª¹æÄ£ÒÑÖª£¬±ÜÃâÔÙ´Î·ÖÅä¿Õ¼ä
+	int distance[30];//ÓÃÓÚ dij_sort
+	bool  Selected[30];//ÓÃÓÚ dij_sort
+	Graph*relative;//ÓëÖ®Ïà¹ØÁªµÄÍ¼(ÁÚ½Ó±í)
+};
+
+ÿ
+
+
+/**Graph_matrix.cpp*/
+#include "Graph_matrix.h"
+#include<iostream>
+#include"Graph.h"
+#include<string> 
+
+extern const int MAX = INT_MAX;
+
+Graph_matrix::Graph_matrix(int n):_n(n)
+{
+	relative = nullptr;
+	this->init();
+}
+
+void Graph_matrix::dij_path(int index)
+{
+	for (int i = 0; i < _n; i++)
+	{
+		distance[i] = table[index][i];//distance[i]±íÊ¾´Ó  indexµ½ i µÄ¾àÀë
+		if (table[index][i] < MAX)
+			path[i] = index;
+		else path[i] = -1;
+
+	}
+	Selected[index] = true;
+	distance[index] = 0;
+	//³õÊ¼»¯Íê³É
+
+	int index_of_selected=-2;
+	for (int i = 1; i < _n; i++)//×îÍâ²ãÑ­»·£¬¼ÇÂ¼´ÎÊı
+		{
+			int min = MAX;
+
+			for(int j=0;j<_n;j++)
+			if (distance[j]!=-1&&!Selected[j] && distance[j] < min)//´ÓV¼¯ºÏÖĞÑ¡È¡Ò»¸öµã//(V=U-S)
+																						//distance[j]!=-1£¬distance[j]Îª-1Ê±±íÊ¾ Ê×Î² ÖÁÉÙÓĞÒ»¸öµã±»É¾³ı
+			{
+				min = distance[j];
+				index_of_selected = j;
+			}
+
+			if (index_of_selected == -2)//´Ëµãµ½Ã¿Ò»¸öµãµÄ¾àÀë¶¼ÊÇ-1
+				throw std::range_error("Æğµã±»É¾³ı");
+
+			Selected[index_of_selected] = true;//Ö»Òª±»Ñ¡ÔñÁË£¬ÄÇËüµÄÇ°ÇıÒ»¶¨¾ÍÃ÷È·ÁË
+
+
+
+			//ÏÂÃæÊÇ¸üĞÂdistance[j]Êı×é
+										//°ÑVÖĞÔªËØµÄdistance¸Äµô,²¢ĞŞ¸ÄjµÄÇ°Çı£¬×¢Òâ
+										//¼ÈÈ»ÒÑ¾­°Ñindex_of_selectedÑ¡ÁË½øÀ´£¬ËµÃ÷ index µ½ index_of_selectedÊÇ¿Éµ½´ïµÄ
+										//Ã»±ØÒª¿¼ÂÇindex. . .index_of_selected.ÖĞ   .index_of_selected µÄ¿É´ïĞÔ£¨ÕâÊÇÔÚÉÏÒ»²½µÄ ´Ë´¦ ´¦ÀíºÃµÄ£©
+										//Ö»ÓĞ¿ÉÄÜÊÇ jµÄÇ°Çı²»Ã÷È·£¬²»¿ÉÄÜÊÇj µÄÇ°Çı µÄÇ°Çı²»Ã÷È·£¨¼ÙÉèin that case ,Ëü½«»áÔÚÕâÒ»²½Ö®Ç°±»´¦Àíµô£©
+			for (int j = 0; j < _n; j++)
+				if (!Selected[j] &&
+					(distance[j] >0.0+ distance[index_of_selected] + table[index_of_selected][j])//0.0+×÷ÓÃÊÇ×Ô¶¯ÀàĞÍ×ª»»£¬ÒòÎªºó±ßÁ½¸öÕûÊıÏà¼Ó¿ÉÄÜ³¬¹ıINT_MAX»á ×ªÎª¸ºÖµ
+					)
+				{
+					distance[j] = distance[index_of_selected] + table[index_of_selected][j];
+					path[j] = index_of_selected;
+				}
+		}
+}
+
+void Graph_matrix::refesh_selected()
+{
+	for (int i = 0; i < _n; i++)
+	{
+		Selected[i] = false;
+	}
+}
+
+void Graph_matrix::init()
+{
+	for (int i = 0; i < _n; i++)
+	{
+		for (int j = 0; j <_n; j++)
+			table[i][j] = MAX;
+
+		Selected[i] = false;
+	}
+}
+
+
+void Graph_matrix::setValue(Graph*gp)
+{
+	this->init();
+	relative = gp;
+	_n = gp->num_V;
+	for (int i = 0; i < _n; i++)
+	{
+		ArcNode*p = gp->list[i].firstArc;
+		while (p)
+		{
+			table[i][p->ToV] = p->info;
+			p = p->nearArc;
+		}
+	}
+
+}
+
+void Graph_matrix::add_E(int from, int des,int coast)
+{
+	if(relative)
+		relative->add_E(from, des, coast);
+	else
+	{
+		table[from][des] = coast;
+	}
+}
+
+void Graph_matrix::add_V(Data d)
+{
+	if (relative)
+		relative->add_V(d);
+	else
+	{
+		for (int i = 0; i <= _n; i++)
+		{
+			table[_n][i] = MAX;
+			table[i][_n] = MAX;
+		}
+		_n++;
+	}
+}
+
+void Graph_matrix::del_E(int from, int des)
+{
+	if (relative)
+		relative->del_E(from, des);
+	else
+	{
+		table[from][des] = MAX;
+	}
+}
+
+void Graph_matrix::del_V(int index)
+{
+	if (relative)
+		relative->del_V(index);
+	else
+	{
+		for (int i = 0; i < _n; i++)
+		{
+			table[index][i] = -1;
+			table[i][index] = -1;
+		}
+	}
+}
+
+std::string Graph_matrix::closest_to(int first,int destination)
+{
+	this->refesh_selected();//ÖØÖÃS¼¯ºÏ
+	int p = destination;
+	this->dij_path(first);
+	std::string route="";
+	do
+	{
+		route ="->"+   relative->list[p].data + route;
+		p = path[p];
+	} while (p!=first);
+
+	route = relative->list[first].data + route;
+	return route;
+}
+
+
+Graph_matrix::Graph_matrix(Graph_matrix & another)
+{
+	
+
+	relative = another.relative;
+	_n = another._n;
+	this->init();
+	for (int i = 0; i < _n; i++)
+	{
+		path[i] = another.path[i];
+		Selected[i] = another.Selected[i];
+		distance[i] = another.distance[i];
+	}
+
+	for (int i = 0; i < _n; i++)
+	{
+		for (int j = 0; j < _n; j++)
+			table[i][j] = another.table[i][j];
+	}
+}
+
+
+Graph_matrix::~Graph_matrix()
+{
+	
+}
+ÿ
+
+
