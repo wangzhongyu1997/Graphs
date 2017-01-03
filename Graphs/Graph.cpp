@@ -85,7 +85,7 @@ std::string Graph::closest_to(int first, int destination)
 		return relative->closest_to(first, destination);
 	else
 	{
-		throw std::overflow_error("没有relative,无法处理");
+		throw std::logic_error("没有relative,无法处理");
 	}
 }
 void Graph::refresh_visited()
@@ -245,8 +245,20 @@ Graph::Graph(void set(Data&Element))
 	{
 		std::cout << '>';
 		std::cin >> first >> second>>cost;
-		int index_1 = _locate(first);
-		int index_2 = _locate(second);
+		int index_1;
+		int index_2;
+		try
+		{
+			index_1 = _locate(first);
+			index_2 = _locate(second);
+		}
+		catch (const std::exception&e)
+		{
+			std::cout << e.what();
+			std::cout << "程序已经自动停止";
+			abort();
+		}
+		
 		ArcNode *ArcNew = new ArcNode;
 		ArcNew->info = cost;
 		ArcNew->ToV = index_2;//弧first-》second
@@ -340,5 +352,5 @@ int Graph::_locate(const Data& e)
 	for (int i = 0; i < num_V; i++)
 		if (list[i].data == e)
 			return i;
-	throw std::range_error("没找到顶点");
+	throw std::range_error("没找到顶点\n");
 }

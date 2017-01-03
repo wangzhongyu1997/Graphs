@@ -52,8 +52,19 @@ int main()
 					std::cout << "输入两个点的数据>";
 					std::string first, second;
 					std::cin >> first >> second;
-					path = graph_matrix->closest_to(grap_no_direction._locate(first), grap_no_direction._locate(second));
-					std::cout << path << std::endl;
+					try {
+						path = graph_matrix->closest_to(grap_no_direction._locate(first), grap_no_direction._locate(second));
+						std::cout << path << std::endl;
+					}
+					catch (std::range_error&e)
+					{
+						std::cout << e.what();
+					}
+					catch (std::exception&e)
+					{
+						std::cout << e.what();
+						std::cout << "\n此路不通" << std::endl;
+					}
 				}
 				else if (op == 2)
 				{
@@ -98,8 +109,20 @@ int main()
 					std::cout << "输入两个点的数据>";
 					std::string first, second;
 					std::cin >> first >> second;
-					path = grap_with_direction.closest_to(grap_with_direction._locate(first), grap_with_direction._locate(second));
-					std::cout << path << std::endl;
+					try {
+						path = grap_with_direction.closest_to(grap_with_direction._locate(first), grap_with_direction._locate(second));
+						std::cout << path << std::endl;
+					}
+					catch (std::range_error&e)
+					{
+						std::cout<<e.what();
+					}
+					catch (std::exception&e)
+					{
+						std::cout << e.what();
+						std::cout << "\n此路不通" << std::endl;
+					}
+					
 				}
 				else if (op == 2)
 				{
