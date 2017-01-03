@@ -13,7 +13,7 @@ public:
 	std::string closest_to(int first, int destination);
 	void dij_path(int index);
 
-	void refesh();//设置集合S 以便   再次使用缔结特拉斯算法
+	void refesh_selected();//设置集合S 以便   再次使用缔结特拉斯算法
 	void init();//置table为全不可达
 	void setValue(Graph*gp);
 	int path[30];//某个节点前驱 用于dij_sort
@@ -28,7 +28,7 @@ private:
 	int _n;//规模
 	int table[30][30];//表//////////////////////*没有用动态数组，因为规模已知，避免再次分配空间
 	int distance[30];//用于 dij_sort
-	bool  S[30];//用于 dij_sort
+	bool  Selected[30];//用于 dij_sort
 	Graph*relative;//与之相关联的图(邻接表)
 };
 

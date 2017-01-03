@@ -7,7 +7,7 @@ const int MAX_LENGHT = 100;
 
 struct ArcNode
 {
-	int ToV;//指向的节点的索引
+	int ToV;//所指向的节点的索引
 	ArcNode* nearArc;//临近边
 	int info;//信息
 };
@@ -30,7 +30,7 @@ public:
 	void BFS2(void visit(Vnode&), int v);
 	std::string closest_to(int first, int destination);
 
-	void refresh();//为搜索收拾烂摊子
+	void refresh_visited();//为搜索收拾烂摊子
 	void add_V(Data d);
 	void add_E(int from,int des,int coast);
 	bool del_E(int from,int des);

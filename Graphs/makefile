@@ -1,16 +1,16 @@
 gg=g++ -std=c++11 
-objects=CircleList_Queue.o  Graph.o  Graph_matrix.o  Mqueue.o  main.o  
-graphhhh.exe:$(objects)
-	$(gg) -o graphhhh.exe  $(objects) 
+objects=BinaryTree.o  CircleList_Queue.o  Graph.o  Graph_matrix.o  main.o  
+Graph.exe:$(objects)
+	$(gg) -o Graph.exe  $(objects) 
+BinaryTree.o:BinaryTree.cpp  BinaryTree.h 
+	$(gg)  -c BinaryTree.cpp 
 CircleList_Queue.o:CircleList_Queue.cpp  CircleList_Queue.h 
 	$(gg)  -c CircleList_Queue.cpp 
 Graph.o:Graph.cpp  Graph.h 
 	$(gg)  -c Graph.cpp 
 Graph_matrix.o:Graph_matrix.cpp  Graph_matrix.h 
 	$(gg)  -c Graph_matrix.cpp 
-Mqueue.o:Mqueue.cpp  Mqueue.h 
-	$(gg)  -c Mqueue.cpp 
-main.o:main.cpp  CircleList_Queue.h  Graph.h  Graph_matrix.h  Mqueue.h  
+main.o:main.cpp  BinaryTree.h  CircleList_Queue.h  Graph.h  Graph_matrix.h  
 	$(gg)  -c main.cpp 
 .PHONY : clean 
 

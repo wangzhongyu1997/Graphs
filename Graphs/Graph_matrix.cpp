@@ -21,7 +21,7 @@ void Graph_matrix::dij_path(int index)
 		else path[i] = -1;
 
 	}
-	S[index] = true;
+	Selected[index] = true;
 	distance[index] = 0;
 	//初始化完成
 
@@ -31,7 +31,7 @@ void Graph_matrix::dij_path(int index)
 			int min = MAX;
 
 			for(int j=0;j<_n;j++)
-			if (distance[j]!=-1&&!S[j] && distance[j] < min)//从V集合中选取一个点//(V=U-S)
+			if (distance[j]!=-1&&!Selected[j] && distance[j] < min)//从V集合中选取一个点//(V=U-S)
 																						//distance[j]!=-1，distance[j]为-1时表示 首尾 至少有一个点被删除
 			{
 				min = distance[j];
@@ -41,7 +41,7 @@ void Graph_matrix::dij_path(int index)
 			if (index_of_selected == -2)//此点到每一个点的距离都是-1
 				throw std::range_error("起点被删除");
 
-			S[index_of_selected] = true;//只要被选择了，那它的前驱一定就明确了
+			Selected[index_of_selected] = true;//只要被选择了，那它的前驱一定就明确了
 
 
 
@@ -51,7 +51,7 @@ void Graph_matrix::dij_path(int index)
 										//没必要考虑index. . .index_of_selected.中   .index_of_selected 的可达性（这是在上一步的 此处 处理好的）
 										//只有可能是 j的前驱不明确，不可能是j 的前驱 的前驱不明确（假设in that case ,它将会在这一步之前被处理掉）
 			for (int j = 0; j < _n; j++)
-				if (!S[j] &&
+				if (!Selected[j] &&
 					(distance[j] >0.0+ distance[index_of_selected] + table[index_of_selected][j])//0.0+作用是自动类型转换，因为后边两个整数相加可能超过INT_MAX会 转为负值
 					)
 				{
@@ -61,11 +61,11 @@ void Graph_matrix::dij_path(int index)
 		}
 }
 
-void Graph_matrix::refesh()
+void Graph_matrix::refesh_selected()
 {
 	for (int i = 0; i < _n; i++)
 	{
-		S[i] = false;
+		Selected[i] = false;
 	}
 }
 
@@ -76,7 +76,7 @@ void Graph_matrix::init()
 		for (int j = 0; j <_n; j++)
 			table[i][j] = MAX;
 
-		S[i] = false;
+		Selected[i] = false;
 	}
 }
 
@@ -149,7 +149,7 @@ void Graph_matrix::del_V(int index)
 
 std::string Graph_matrix::closest_to(int first,int destination)
 {
-	this->refesh();//重置S集合
+	this->refesh_selected();//重置S集合
 	int p = destination;
 	this->dij_path(first);
 	std::string route="";
@@ -174,7 +174,7 @@ Graph_matrix::Graph_matrix(Graph_matrix & another)
 	for (int i = 0; i < _n; i++)
 	{
 		path[i] = another.path[i];
-		S[i] = another.S[i];
+		Selected[i] = another.Selected[i];
 		distance[i] = another.distance[i];
 	}
 

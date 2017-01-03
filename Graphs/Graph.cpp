@@ -88,7 +88,7 @@ std::string Graph::closest_to(int first, int destination)
 		throw std::overflow_error("没有relative,无法处理");
 	}
 }
-void Graph::refresh()
+void Graph::refresh_visited()
 {
 	for (int i = 0; i < num_V; i++)
 	{
@@ -125,6 +125,9 @@ void Graph::add_E(int from, int des,int coast)
 bool Graph::del_E(int from, int des)
 {
 	ArcNode *pre = list[from].firstArc;
+	if (!pre)
+		return false;
+
 	ArcNode *p = pre->nearArc;
 	if (pre->ToV == des)
 	{
@@ -222,7 +225,7 @@ Graph::Graph(void set(Data&Element))
 {
 	right = false;
 	relative = nullptr;
-	std::cout << "构造无向图：输入节点数和边数";
+	std::cout << "构造无向图：输入节点数和边数\n>";
 	std::cin >> num_V >> num_E;//输入节点数和边数
 	visited = new bool[num_V];
 	for (int i = 0; i < num_V; i++)
