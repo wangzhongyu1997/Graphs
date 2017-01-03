@@ -24,10 +24,11 @@ int main()
 	*且num_V保持不变
 	*/
 	int op0 = 0;
-	while (std::cout<<"输入1建立无向图，输入2建立有向图，否则退出\n>"&&std::cin>>op0)
+	while (std::cout<<"输入1建立无向图，输入2建立有向图，其他则退出\n>"&&std::cin>>op0)
 	{
 		if (op0 == 1)
 		{
+			std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-无向图的操作-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n";
 			Graph grap_no_direction(set);//建立无向图
 			BinaryTree tree = nullptr;
 			std::cout << "深度优先遍历，建立二叉树以表示深度优先生成树\n";
@@ -42,9 +43,9 @@ int main()
 			grap_no_direction.BFS(visit, 0);//广度优先搜索
 			Graph_matrix*graph_matrix = grap_no_direction.New_get_matrix();//获取矩阵
 			std::string path;
-			std::cout << "下面执行两种操作:\n";
+			std::cout << "\n\n下面执行两种操作:\n\n";
 			int op;
-			while (std::cout << "求最短路径:1\n删除点 : 2\n返回上一层:0\n>"&&std::cin >> op)
+			while (std::cout << "\t求最短路径:1\n\t删除点 : 2\n\t返回上一层:0\n>"&&std::cin >> op)
 			{
 				if (op == 1)
 				{
@@ -65,7 +66,9 @@ int main()
 			}
 		}
 		else if (op0 == 2)
+
 		{
+			std::cout << "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-有向图的操作-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n";
 			int V;
 			int E;
 			std::cout << "建立有向图,请输入顶点数和弧数\n>";
@@ -86,9 +89,9 @@ int main()
 			grap_with_direction.BFS(visit, 0);//广度优先搜索
 			grap_with_direction.New_get_matrix();//生成矩阵
 			std::string path;
-			std::cout << "下面执行两种操作:\n";
+			std::cout << "\n\n下面执行两种操作:\n\n";
 			int op;
-			while (std::cout << "求最短路径:1\n删除点 : 2\n返回上一层:0\n>"&&std::cin >> op)
+			while (std::cout << "\t求最短路径:1\n\t删除点 : 2\n\t返回上一层:0\n>"&&std::cin >> op)
 			{
 				if (op == 1)
 				{

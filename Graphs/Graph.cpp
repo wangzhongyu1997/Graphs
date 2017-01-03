@@ -238,7 +238,7 @@ Graph::Graph(void set(Data&Element))
 		set(list[i].data);
 		list[i].firstArc = nullptr;
 	}
-	std::cout << "输入边:(串)首节点，尾节点；  (int)权值";
+	std::cout << "输入边:(串)首节点，尾节点；  (int)权值\n";
 	Data first, second;
 	int cost;
 	for (int i = 0; i < num_E; i++)
@@ -278,7 +278,7 @@ Graph::Graph(int Vnum, int Enum)
 		std::cin>>list[i].data;
 		list[i].firstArc = nullptr;
 	}
-	std::cout << "输入边:(串)弧的起点，弧的终点，  (int)权值";
+	std::cout << "输入边:(串)弧的起点，弧的终点，  (int)权值\n";
 	Data first, second;
 	int cost;
 	for (int i = 0; i < num_E; i++)
