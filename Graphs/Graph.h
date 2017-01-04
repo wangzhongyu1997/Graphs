@@ -9,13 +9,18 @@ struct ArcNode
 {
 	int ToV;//所指向的节点的索引
 	ArcNode* nearArc;//临近边
-	int info;//信息
+	double info;//信息
+	
 };
 
 struct Vnode
 {
+	Vnode();
 	Data data;//节点唯一属性
 	ArcNode *firstArc;
+	bool*known;
+	double dist;
+	int path;
 };
 class Graph
 {
@@ -29,12 +34,15 @@ public:
 	void BFS(void visit(Vnode&),int v);
 	void BFS2(void visit(Vnode&), int v);
 	std::string closest_to(int first, int destination);
+	void dij_path(int index);
+	void min_tree(int index);
 
 	void refresh_visited();//为搜索收拾烂摊子
 	void add_V(Data d);
 	void add_E(int from,int des,int coast);
 	bool del_E(int from,int des);
 	void del_V(int index);
+	
 	Graph(void input(Data&Element));//无向图构造，只是为了体验一下函数作参
 	Graph(int V, int E);//有向图构造
 	~Graph();

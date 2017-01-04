@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include<iostream>
 #include<stdexcept>
+#include<map>
 #include"CircleList_Queue.h"
 #include"Graph_matrix.h"
 #include"BinaryTree.h"
@@ -81,11 +82,94 @@ void Graph::BFS2(void visit(Vnode&), int v)
 }
 std::string Graph::closest_to(int first, int destination)
 {
-	if(relative)
-		return relative->closest_to(first, destination);
-	else
+	int p = destination;
+	this->dij_path(first);
+	std::string route = "";
+	do
 	{
-		throw std::logic_error("没有relative,无法处理");
+		route = "->" + list[p].data + route;
+		p = list[p].path;
+	} while (p != first);
+
+	route = list[first].data + route;
+	return route;
+}
+void Graph::dij_path(int index)
+{
+	std::multimap<double, int> autoSortQueue_unknownAndAdjacentV;
+	for (int i = 0; i < num_V; i++)
+	{
+		list[i].dist = MAX;
+		*list[i].known = false;
+	}
+
+	list[index].dist = 0;
+	autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(0, index));
+
+	while (!autoSortQueue_unknownAndAdjacentV.empty())
+	{
+		do 
+		{
+			std::multimap<double, int>::iterator it = autoSortQueue_unknownAndAdjacentV.begin();
+			index = (*it).second;
+			autoSortQueue_unknownAndAdjacentV.erase(it);
+		} while (*list[index].known);
+		
+		Vnode&V = list[index];
+		*V.known = true;
+		ArcNode *p = list[index].firstArc;
+		while (p)
+		{
+			Vnode&W = list[p->ToV];//W就是V个指向的每一个点
+			if (! *(W.known))
+				if (W.dist>V.dist+p->info)//p->info表示W,V两点的距离
+				{//修改W
+					W.dist = V.dist + p->info;
+					autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(W.dist, p->ToV));
+					W.path = index;
+				}
+			p = p->nearArc;
+		}
+	}
+}
+void Graph::min_tree(int index)
+{
+	std::multimap<double, int> autoSortQueue_unknownAndAdjacentV;
+	for (int i = 0; i < num_V; i++)
+	{
+		list[i].dist = MAX;
+		*list[i].known = false;
+	}
+
+	list[index].dist = 0;
+	autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(0, index));
+	//index表示当前节点索引
+	int index_selected;
+	while (!autoSortQueue_unknownAndAdjacentV.empty())
+	{
+		do
+		{
+			std::multimap<double, int>::iterator it = autoSortQueue_unknownAndAdjacentV.begin();
+			index_selected = (*it).second;
+			autoSortQueue_unknownAndAdjacentV.erase(it);
+		} while (*list[index_selected].known);//寻找一个没有声明为known的点
+
+		Vnode&V = list[index_selected];
+		*V.known = true;
+		std::cout << '<' << list[V.path].data<< ',' << V.data <<'>'<<std::endl;
+		ArcNode *p = list[index_selected].firstArc;
+		while (p)
+		{
+			Vnode&W = list[p->ToV];//W就是V指向的每一个点
+			if (!*(W.known))
+				if (W.dist> p->info)//p->info表示W,V两点的距离
+				{//修改W
+					W.dist =p->info;
+					autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(W.dist, p->ToV));
+					W.path = index_selected;
+				}
+			p = p->nearArc;
+		}
 	}
 }
 void Graph::refresh_visited()
@@ -221,6 +305,7 @@ void Graph::del_V(int index)
 	}
 }
 
+
 Graph::Graph(void set(Data&Element))
 {
 	right = false;
@@ -330,6 +415,8 @@ Graph::~Graph()
 {
 	for (int i = 0; i < num_V; i++)
 	{
+		delete list[i].known;
+
 		ArcNode*pre = list[i].firstArc;
 		if (!pre)
 			continue;
@@ -353,4 +440,12 @@ int Graph::_locate(const Data& e)
 		if (list[i].data == e)
 			return i;
 	throw std::range_error("没找到顶点\n");
+}
+
+
+
+Vnode::Vnode()
+{
+	known = new bool;
+	*known = false;
 }

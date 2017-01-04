@@ -3,6 +3,8 @@
 //#include"CircleList_Queue.h"
 #include"Graph_matrix.h"
 #include"BinaryTree.h"
+#include<queue>
+
 void set(std::string&a)
 {
 	std::cin >> a;
@@ -41,6 +43,8 @@ int main()
 			grap_no_direction.refresh_visited();
 			std::cout << "\n广度遍历结果\n";
 			grap_no_direction.BFS(visit, 0);//广度优先搜索
+			std::cout << "\n\n最小生成树\n";
+			grap_no_direction.min_tree(0);
 			Graph_matrix*graph_matrix = grap_no_direction.New_get_matrix();//获取矩阵
 			std::string path;
 			std::cout << "\n\n下面执行两种操作:\n\n";
@@ -53,7 +57,7 @@ int main()
 					std::string first, second;
 					std::cin >> first >> second;
 					try {
-						path = graph_matrix->closest_to(grap_no_direction._locate(first), grap_no_direction._locate(second));
+						path = grap_no_direction.closest_to(grap_no_direction._locate(first), grap_no_direction._locate(second));
 						std::cout << path << std::endl;
 					}
 					catch (std::range_error&e)
