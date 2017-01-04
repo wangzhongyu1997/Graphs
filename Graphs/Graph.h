@@ -22,6 +22,13 @@ struct Vnode
 	double dist;
 	int path;
 };
+struct Vnode_imag
+{
+	bool operator <(const Vnode_imag&another);
+	Vnode_imag(double dis, int index);
+	double dist;
+	int index;
+};
 class Graph
 {
 public:
@@ -47,7 +54,7 @@ public:
 	Graph(int V, int E);//有向图构造
 	~Graph();
 
-	Graph_matrix* New_get_matrix();//请特别注意，返回的是一个动态的对象指针！！/只为避免复制
+	Graph_matrix* New_get_matrix();//请特别注意，返回的是一个动态对象的指针！！/只为避免复制
 	int  _locate(const Data& e);
 	
 private:

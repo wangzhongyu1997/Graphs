@@ -1,11 +1,12 @@
 #include "Graph.h"
 #include<iostream>
+#include<queue>
 #include<stdexcept>
 #include<map>
 #include"CircleList_Queue.h"
 #include"Graph_matrix.h"
 #include"BinaryTree.h"
-extern const  int MAX;
+extern const  int MAX; 
 
 void Graph::DFS(void visit(Vnode &),int v)// 连通图的DFS
 {
@@ -96,7 +97,7 @@ std::string Graph::closest_to(int first, int destination)
 }
 void Graph::dij_path(int index)
 {
-	std::multimap<double, int> autoSortQueue_unknownAndAdjacentV;
+	std::priority_queue<Vnode_imag> autoSortQueue_unknownAndAdjacentV;
 	for (int i = 0; i < num_V; i++)
 	{
 		list[i].dist = MAX;
@@ -104,20 +105,20 @@ void Graph::dij_path(int index)
 	}
 
 	list[index].dist = 0;
-	autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(0, index));
+	autoSortQueue_unknownAndAdjacentV.push(Vnode_imag(list[index].dist,index));
 
+	int index_selected;
 	while (!autoSortQueue_unknownAndAdjacentV.empty())
 	{
 		do 
 		{
-			std::multimap<double, int>::iterator it = autoSortQueue_unknownAndAdjacentV.begin();
-			index = (*it).second;
-			autoSortQueue_unknownAndAdjacentV.erase(it);
-		} while (*list[index].known);
+			index_selected = autoSortQueue_unknownAndAdjacentV.top().index;
+			autoSortQueue_unknownAndAdjacentV.pop();
+		} while (*list[index_selected].known);
 		
-		Vnode&V = list[index];
+		Vnode&V = list[index_selected];
 		*V.known = true;
-		ArcNode *p = list[index].firstArc;
+		ArcNode *p = list[index_selected].firstArc;
 		while (p)
 		{
 			Vnode&W = list[p->ToV];//W就是V个指向的每一个点
@@ -125,8 +126,8 @@ void Graph::dij_path(int index)
 				if (W.dist>V.dist+p->info)//p->info表示W,V两点的距离
 				{//修改W
 					W.dist = V.dist + p->info;
-					autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(W.dist, p->ToV));
-					W.path = index;
+					autoSortQueue_unknownAndAdjacentV.push(Vnode_imag(W.dist,index_selected));
+					W.path = index_selected;
 				}
 			p = p->nearArc;
 		}
@@ -448,4 +449,14 @@ Vnode::Vnode()
 {
 	known = new bool;
 	*known = false;
+}
+
+
+bool Vnode_imag::operator<(const Vnode_imag & another)
+{
+	return this->dist > another.dist;
+}
+
+Vnode_imag::Vnode_imag(double dis, int index):dist(dis),index(index)
+{
 }
