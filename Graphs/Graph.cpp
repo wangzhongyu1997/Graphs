@@ -1,7 +1,7 @@
 #include "Graph.h"
 #include<iostream>
 #include<stdexcept>
-#include<map>
+#include"auto_queue.h"
 #include"CircleList_Queue.h"
 #include"Graph_matrix.h"
 #include"BinaryTree.h"
@@ -96,7 +96,7 @@ std::string Graph::closest_to(int first, int destination)
 }
 void Graph::dij_path(int index)
 {
-	std::multimap<double, int> autoSortQueue_unknownAndAdjacentV;
+	auto_queue autoSortQueue;// 目前已经探测到的且未声明为已知的点的集合，自排序队列，
 	for (int i = 0; i < num_V; i++)
 	{
 		list[i].dist = MAX;
@@ -104,20 +104,19 @@ void Graph::dij_path(int index)
 	}
 
 	list[index].dist = 0;
-	autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(0, index));
+	autoSortQueue.enQueue(std::pair<double, int>(0, index));
 
-	while (!autoSortQueue_unknownAndAdjacentV.empty())
+	int index_selected;
+	while (!autoSortQueue.empty())
 	{
 		do 
 		{
-			std::multimap<double, int>::iterator it = autoSortQueue_unknownAndAdjacentV.begin();
-			index = (*it).second;
-			autoSortQueue_unknownAndAdjacentV.erase(it);
-		} while (*list[index].known);
+			index_selected = autoSortQueue.deQueue();
+		} while (*list[index_selected].known);
 		
-		Vnode&V = list[index];
+		Vnode&V = list[index_selected];
 		*V.known = true;
-		ArcNode *p = list[index].firstArc;
+		ArcNode *p = list[index_selected].firstArc;
 		while (p)
 		{
 			Vnode&W = list[p->ToV];//W就是V个指向的每一个点
@@ -125,16 +124,16 @@ void Graph::dij_path(int index)
 				if (W.dist>V.dist+p->info)//p->info表示W,V两点的距离
 				{//修改W
 					W.dist = V.dist + p->info;
-					autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(W.dist, p->ToV));
-					W.path = index;
+					autoSortQueue.enQueue(std::pair<double, int>(W.dist, p->ToV));
+					W.path = index_selected;
 				}
 			p = p->nearArc;
 		}
 	}
 }
-void Graph::min_tree(int index)
+void Graph::min_tree(int index)//人能看懂的prim算法
 {
-	std::multimap<double, int> autoSortQueue_unknownAndAdjacentV;
+	auto_queue autoSortQueue;
 	for (int i = 0; i < num_V; i++)
 	{
 		list[i].dist = MAX;
@@ -142,16 +141,14 @@ void Graph::min_tree(int index)
 	}
 
 	list[index].dist = 0;
-	autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(0, index));
+	autoSortQueue.insert(std::pair<double, int>(0, index));
 	//index表示当前节点索引
 	int index_selected;
-	while (!autoSortQueue_unknownAndAdjacentV.empty())
+	while (!autoSortQueue.empty())
 	{
 		do
 		{
-			std::multimap<double, int>::iterator it = autoSortQueue_unknownAndAdjacentV.begin();
-			index_selected = (*it).second;
-			autoSortQueue_unknownAndAdjacentV.erase(it);
+			index_selected = autoSortQueue.deQueue();
 		} while (*list[index_selected].known);//寻找一个没有声明为known的点
 
 		Vnode&V = list[index_selected];
@@ -165,7 +162,7 @@ void Graph::min_tree(int index)
 				if (W.dist> p->info)//p->info表示W,V两点的距离
 				{//修改W
 					W.dist =p->info;
-					autoSortQueue_unknownAndAdjacentV.insert(std::pair<double, int>(W.dist, p->ToV));
+					autoSortQueue.enQueue(std::pair<double, int>(W.dist, p->ToV));
 					W.path = index_selected;
 				}
 			p = p->nearArc;

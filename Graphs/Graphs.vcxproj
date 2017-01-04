@@ -146,12 +146,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="auto_queue.h" />
     <ClInclude Include="BinaryTree.h" />
     <ClInclude Include="CircleList_Queue.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="Graph_matrix.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="auto_queue.cpp" />
     <ClCompile Include="BinaryTree.cpp" />
     <ClCompile Include="CircleList_Queue.cpp" />
     <ClCompile Include="Graph.cpp" />
