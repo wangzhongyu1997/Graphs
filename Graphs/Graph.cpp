@@ -100,7 +100,7 @@ void Graph::dij_path(int index)
 	for (int i = 0; i < num_V; i++)
 	{
 		list[i].dist = MAX;
-		*list[i].known = false;
+		list[i].known = false;
 	}
 
 	list[index].dist = 0;
@@ -112,15 +112,15 @@ void Graph::dij_path(int index)
 		do 
 		{
 			index_selected = autoSortQueue.deQueue();
-		} while (*list[index_selected].known);
+		} while (list[index_selected].known);
 		
 		Vnode&V = list[index_selected];
-		*V.known = true;
+		V.known = true;
 		ArcNode *p = list[index_selected].firstArc;
 		while (p)
 		{
 			Vnode&W = list[p->ToV];//W就是V个指向的每一个点
-			if (! *(W.known))
+			if (! (W.known))
 				if (W.dist>V.dist+p->info)//p->info表示W,V两点的距离
 				{//修改W
 					W.dist = V.dist + p->info;
@@ -137,28 +137,28 @@ void Graph::min_tree(int index)//人能看懂的prim算法
 	for (int i = 0; i < num_V; i++)
 	{
 		list[i].dist = MAX;
-		*list[i].known = false;
+		(list[i].known) = false;
 	}
-
+	//index表示当前节点索引
 	list[index].dist = 0;
 	autoSortQueue.insert(std::pair<double, int>(0, index));
-	//index表示当前节点索引
+	
 	int index_selected;
 	while (!autoSortQueue.empty())
 	{
 		do
 		{
 			index_selected = autoSortQueue.deQueue();
-		} while (*list[index_selected].known);//寻找一个没有声明为known的点
+		} while (list[index_selected].known);//寻找一个没有声明为known的点
 
 		Vnode&V = list[index_selected];
-		*V.known = true;
+		V.known = true;
 		std::cout << '<' << list[V.path].data<< ',' << V.data <<'>'<<std::endl;
 		ArcNode *p = list[index_selected].firstArc;
 		while (p)
 		{
 			Vnode&W = list[p->ToV];//W就是V指向的每一个点
-			if (!*(W.known))
+			if (!(W.known))
 				if (W.dist> p->info)//p->info表示W,V两点的距离
 				{//修改W
 					W.dist =p->info;
@@ -412,8 +412,7 @@ Graph::~Graph()
 {
 	for (int i = 0; i < num_V; i++)
 	{
-		delete list[i].known;
-
+		
 		ArcNode*pre = list[i].firstArc;
 		if (!pre)
 			continue;
@@ -444,5 +443,5 @@ int Graph::_locate(const Data& e)
 Vnode::Vnode()
 {
 	known = new bool;
-	*known = false;
+	known = false;
 }

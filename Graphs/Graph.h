@@ -18,7 +18,7 @@ struct Vnode
 	Vnode();
 	Data data;//节点唯一属性
 	ArcNode *firstArc;
-	bool*known;
+	bool known;
 	double dist;
 	int path;
 };
